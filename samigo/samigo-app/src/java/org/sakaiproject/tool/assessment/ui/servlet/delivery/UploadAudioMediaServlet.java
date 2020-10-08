@@ -125,9 +125,12 @@ private static Logger log = LoggerFactory.getLogger(UploadAudioMediaServlet.clas
     if (mediaLocation != null && !(mediaLocation.trim()).equals(""))
     {
       File repositoryPathDir = new File(repositoryPath);
-      mediaLocation = repositoryPathDir.getCanonicalPath() + "/" + mediaLocation;
+      // Fix Windows paths
+      if("\\".equals(File.separator)){
+          mediaLocation = mediaLocation.replace("/","\\");
+      }
+      mediaLocation = repositoryPathDir.getCanonicalPath() + File.separator + mediaLocation;
       File mediaFile = new File(mediaLocation);
-      
       if (mediaFile.getCanonicalPath().equals (mediaLocation)){
     	  File mediaDir = mediaFile.getParentFile(); 
           if (!mediaDir.exists())
